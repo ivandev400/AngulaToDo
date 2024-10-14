@@ -4,6 +4,9 @@ using AngulaToDo.Server.Services.Interfaces;
 using AngulaToDo.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,27 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 })
         .AddEntityFrameworkStores<ToDoContext>()
         .AddDefaultTokenProviders();
+
+
+var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtConfig:Secret"]);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(jwt =>
+{
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        RequireExpirationTime = false,
+        ValidateLifetime = true
+    };
+});
 
 builder.Services.AddScoped<IUserService, UserService>();
 
