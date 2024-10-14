@@ -1,4 +1,8 @@
 using AngulaToDo.Server.Data;
+using AngulaToDo.Server.Models;
+using AngulaToDo.Server.Services.Interfaces;
+using AngulaToDo.Server.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +16,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ToDoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQlConnection")));
+
+builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+})
+        .AddEntityFrameworkStores<ToDoContext>()
+        .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -27,6 +41,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
