@@ -1,19 +1,29 @@
 <div class="container mt-5">
-  <h2 class="text-center">Register Your  New Account</h2>
-  <form class="mx-auto" style="max-width: 400px;">
+  <h2 class="text-center">Register Your New Account</h2>
+
+  <form (ngSubmit)="onSubmit()" class="mx-auto" style="max-width: 400px;">
+
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" placeholder="Enter username">
+      <input type="text" formControlName="username" class="form-control" id="username" placeholder="Enter username">
     </div>
+
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="text" class="form-control" id="email" placeholder="Enter your email">
+      <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter email">
     </div>
+
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="Enter password">
+      <input type="password" formControlName="password" class="form-control" id="password" placeholder="Enter password">
     </div>
-    <button type="submit" class="btn btn-primary btn-block text-center" style="margin-top: 5px">Login</button>
-    <p class="text-center">Or <a href="/login">Login</a> if you already have an account.</p>
+    <button type="submit" class="btn btn-primary btn-block text-center" style="margin-top: 5px">
+      Register
+    </button>
+
+    <p class="text-center mt-2">Or <a [routerLink]="['/login']">Login</a> if you already have an account.</p>
+
+    <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+
   </form>
 </div>

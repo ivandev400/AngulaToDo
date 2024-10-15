@@ -49,9 +49,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options => { options.AddPolicy("AllowAllOrigins", builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }); });
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
+
+app.UseCors("AllowAllOrigins");
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

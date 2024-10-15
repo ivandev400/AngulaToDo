@@ -25,11 +25,11 @@ namespace AngulaToDo.Server.Controllers
             [HttpPost("login")]
             public async Task<IActionResult> Login([FromBody] LoginViewModel model)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByNameAsync(model.UserName);
+                    var user = await _userManager.FindByNameAsync(model.Email);
                     var token = _userService.GenerateJwtToken(user);
                     return Ok(new { Token = token });
                 }
