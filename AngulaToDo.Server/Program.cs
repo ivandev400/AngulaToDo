@@ -20,13 +20,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ToDoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQlConnection")));
 
-builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
-{
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 6;
-})
-        .AddEntityFrameworkStores<ToDoContext>()
-        .AddDefaultTokenProviders();
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ToDoContext>()
+    .AddDefaultTokenProviders();
 
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JwtConfig:Secret"]);
@@ -49,14 +45,19 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddCors(options => { options.AddPolicy("AllowAllOrigins", builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }); });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
 app.UseCors("AllowAllOrigins");
-
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

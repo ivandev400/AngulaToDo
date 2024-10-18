@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
+using AngulaToDo.Server.Data.Dtos;
 
 namespace AngulaToDo.Server.Services
 {
@@ -12,22 +14,21 @@ namespace AngulaToDo.Server.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public UserService(UserManager<User> userManager, IConfiguration configuration)
+        public UserService(UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
-        public async Task<IdentityResult> CreateUserAsync(string userName, string userEmail, string password)
+        public async Task<IdentityResult> CreateUserAsync(UserForRegistrationDto userForRegistration)
         {
-            var user = new User
-            {
-                UserName = userName,
-                Email = userEmail,
-            };
+            var user = _mapper.Map<User>(userForRegistration);
+            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
 
-            return await _userManager.CreateAsync(user, password);
+            return await _userManager.CreateAsync(user, userForRegistration.Password);
         }
 
         public string GenerateJwtToken(User user)

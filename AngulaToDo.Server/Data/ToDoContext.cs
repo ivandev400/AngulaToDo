@@ -1,12 +1,12 @@
 ﻿using AngulaToDo.Server.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Task = AngulaToDo.Server.Models.Task;
 
 namespace AngulaToDo.Server.Data
 {
-    public class ToDoContext : DbContext
+    public class ToDoContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Task> Tasks { get; set; }
 
@@ -14,6 +14,8 @@ namespace AngulaToDo.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Tasks)
                 .WithOne(t => t.User)
