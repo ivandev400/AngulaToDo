@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AngulaToDo.Server.Services.Interfaces
 {
-    public interface IUserService
+    public interface IRegisterService
     {
         public Task<IdentityResult> CreateUserAsync(UserForRegistrationDto userForRegistration);
-        public string GenerateJwtToken(User user);
     }
 }

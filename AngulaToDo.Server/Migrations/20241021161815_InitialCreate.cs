@@ -189,8 +189,7 @@ namespace AngulaToDo.Server.Migrations
                         name: "FK_Tasks_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tasks_Categories_CategoryId",
                         column: x => x.CategoryId,

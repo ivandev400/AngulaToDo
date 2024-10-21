@@ -11,11 +11,15 @@ namespace AngulaToDo.Server.Controllers
     [Route("api/accounts")]
     public class AccountsController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IRegisterService _userService;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
-        public AccountsController(IUserService userService)
+        public AccountsController(IRegisterService userService, SignInManager<User> signInManager, UserManager<User> userManager)
         {
             _userService = userService;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpPost("register")]
@@ -34,22 +38,18 @@ namespace AngulaToDo.Server.Controllers
 
             return StatusCode(201);
         }
-
-        /*
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLogin)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
-
+            var result = await _signInManager.PasswordSignInAsync(userForLogin.Email, userForLogin.Password, isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                var token = _userService.GenerateJwtToken(user);
-                return Ok(new { Token = token });
+                var user = await _userManager.FindByEmailAsync(userForLogin.Email);
+
+                return Ok(new {userId = user.Id});
             }
 
             return Unauthorized();
         }
-        */
     }
 }

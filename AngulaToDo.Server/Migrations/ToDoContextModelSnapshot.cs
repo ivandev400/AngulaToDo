@@ -282,8 +282,7 @@ namespace AngulaToDo.Server.Migrations
 
                     b.HasOne("AngulaToDo.Server.Models.User", "User")
                         .WithMany("Tasks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 

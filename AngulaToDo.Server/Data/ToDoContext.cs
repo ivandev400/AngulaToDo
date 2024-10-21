@@ -16,12 +16,6 @@ namespace AngulaToDo.Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Tasks)
-                .WithOne(t => t.User)
-                .HasForeignKey(t => t.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Category)
                 .WithMany(c => c.Tasks)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AngulaToDo.Server.Migrations
 {
     [DbContext(typeof(ToDoContext))]
-    [Migration("20241018140855_InitialCreate")]
+    [Migration("20241021161815_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -285,8 +285,7 @@ namespace AngulaToDo.Server.Migrations
 
                     b.HasOne("AngulaToDo.Server.Models.User", "User")
                         .WithMany("Tasks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
 
