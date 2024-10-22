@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -21,8 +22,12 @@ export class LoginComponent {
 
     this.authService.login(credentials)
       .subscribe((response: any) => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/tokens']);
+        if (response && response.userId) {
+          localStorage.setItem('userId', response.userId);
+
+          this.router.navigate([`/tasks/${response.userId}`]);
+        }
+
       }, error => {
         console.error('Login failed', error);
       });

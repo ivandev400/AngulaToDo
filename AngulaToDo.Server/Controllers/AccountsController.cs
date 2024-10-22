@@ -2,11 +2,13 @@
 using AngulaToDo.Server.Data.Dtos;
 using AngulaToDo.Server.Models;
 using AngulaToDo.Server.Services.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AngulaToDo.Server.Controllers
 {
+    [EnableCors("AllowSpecificOrigin")]
     [ApiController]
     [Route("api/accounts")]
     public class AccountsController : ControllerBase
