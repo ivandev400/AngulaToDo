@@ -24,12 +24,12 @@
               <i class="fas fa-tasks"></i> All Tasks
             </a>
           </li>
-          <li class="nav-item" style="margin-top:52vh">
-            <a class="nav-link text-danger py-2" href="/logout">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-          </li>
         </ul>
+        <div class="nav-item mt-auto position-sticky pt-3">
+          <a class="nav-link text-danger py-2" href="/logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </div>
       </div>
     </nav>
 
@@ -37,7 +37,41 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Tasks</h1>
-        <a [routerLink]="['/tasks', userId, 'create']" class="btn btn-primary">Create New Task</a>
+      </div>
+
+      <!-- Add a new task input -->
+      <div class="input-group mb-3">
+        <!-- Task Title Input -->
+        <input [(ngModel)]="newTaskTitle"
+               type="text"
+               class="form-control"
+               placeholder="Add a task"
+               aria-label="Task Title"
+               aria-describedby="addTaskBtn" />
+
+        <!-- Task Due Date Input -->
+        <input [(ngModel)]="newTaskDueDate"
+               type="date"
+               class="form-control"
+               placeholder="Due Date"
+               aria-label="Task Due Date"
+               aria-describedby="addTaskBtn" />
+
+        <!-- Task Importance Checkbox -->
+        <div class="form-check form-switch">
+          <input class="form-check-input"
+                 type="checkbox"
+                 id="importantTaskCheck"
+                 [(ngModel)]="newTaskImportant" />
+          <label class="form-check-label" for="importantTaskCheck">
+            Important
+          </label>
+        </div>
+
+        <!-- Add Button -->
+        <button class="btn btn-outline-secondary" type="button" (click)="addTask()">
+          Add
+        </button>
       </div>
 
       <!-- Task List -->
@@ -46,21 +80,49 @@
           <thead>
             <tr>
               <th>Title</th>
-              <th>Description</th>
               <th>Due Date</th>
+              <th>Importance</th>
+              <th>Completed</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let task of tasks">
-              <td>{{ task.title }}</td>
-              <td>{{ task.description }}</td>
-              <td>{{ task.dueDate | date: 'shortDate' }}</td>
+              <!-- Task title -->
               <td>
-                <!-- Edit Task Button -->
-                <a [routerLink]="['/tasks', userId, 'edit', task.id]" class="btn btn-sm btn-warning">Edit</a>
+                <input [(ngModel)]="task.title"
+                       type="text"
+                       class="form-control"
+                       placeholder="Task title" />
+              </td>
 
-                <!-- Delete Task Button -->
+              <!-- Due date -->
+              <td>
+                <input [(ngModel)]="task.dueDate"
+                       type="date"
+                       class="form-control"
+                       placeholder="Due Date" />
+              </td>
+
+              <!-- Importance (flag/star icon) -->
+              <td>
+                <button class="btn"
+                        [ngClass]="{ 'text-warning': task.important, 'text-muted': !task.important }"
+                        (click)="toggleImportance(task)">
+                  <i class="fa" [ngClass]="task.important ? 'fa-star' : 'fa-star-o'"></i>
+                </button>
+              </td>
+
+              <!-- Completed (Checkbox) -->
+              <td>
+                <input type="checkbox"
+                       [(ngModel)]="task.completed"
+                       (change)="toggleCompleted(task)" />
+              </td>
+
+              <!-- Actions (Edit/Delete) -->
+              <td>
+                <a [routerLink]="['/tasks', userId, 'edit', task.id]" class="btn btn-sm btn-warning">Edit</a>
                 <button (click)="deleteTask(task.id)" class="btn btn-sm btn-danger">Delete</button>
               </td>
             </tr>

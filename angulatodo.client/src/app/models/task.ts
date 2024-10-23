@@ -2,8 +2,9 @@ export interface Task {
   id?: number;
   title?: string;
   description?: string;
-  isImportant?: boolean;
+  important?: boolean;
   completed?: boolean;
   created?: Date;
   dueDate?: Date;
+  categoryId?: number;
 }

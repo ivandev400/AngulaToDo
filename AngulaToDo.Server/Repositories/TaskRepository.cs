@@ -1,5 +1,6 @@
 ﻿using AngulaToDo.Server.Data;
 using AngulaToDo.Server.Data.Dtos;
+using AngulaToDo.Server.Models;
 using AngulaToDo.Server.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -33,10 +34,10 @@ namespace AngulaToDo.Server.Repositories
             {
                 UserId = userId,
                 Title = taskDto.Title,
-                Description = taskDto.Description,
                 IsImportant = taskDto.IsImportant,
                 Created = DateTime.Now,
-                DueDate = taskDto.DueDate
+                DueDate = taskDto.DueDate,
+                CategoryId = taskDto.CategoryId
             };
 
             _context.Tasks.Add(task);
@@ -58,7 +59,6 @@ namespace AngulaToDo.Server.Repositories
             var task = await GetTaskByIdAsync(userId, taskId);
 
             task.Title = taskDto.Title;
-            task.Description = taskDto.Description;
             task.IsImportant = taskDto.IsImportant;
             task.Completed = taskDto.Completed;
             task.DueDate = taskDto.DueDate;

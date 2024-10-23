@@ -10,7 +10,7 @@
         public DateTime Created { get; set; }
         public DateTime DueDate { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public string? UserId { get; set; }
 
         public User? User { get; set; }

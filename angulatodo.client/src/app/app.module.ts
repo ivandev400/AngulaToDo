@@ -26,6 +26,6 @@ import { TasksComponent } from './tasks/tasks.component';
   ],
   providers: [
   ],
-  bootstrap: [AppComponent, LoginComponent, RegisterComponent]
+  bootstrap: [AppComponent, LoginComponent, RegisterComponent, TasksComponent]
 })
 export class AppModule { }
