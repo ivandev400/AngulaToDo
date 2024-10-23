@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AngulaToDo.Server.Services.Interfaces;
 using AngulaToDo.Server.Data.Dtos;
-using AngulaToDo.Server.Models;
 
 namespace AngulaToDo.Server.Controllers
 {
@@ -45,7 +44,7 @@ namespace AngulaToDo.Server.Controllers
         }
 
         [HttpPost("{userId}")]
-        public async Task<ActionResult> CreateCategory(string userId, CategoryDto categoryDto)
+        public async Task<ActionResult> CreateCategory(string userId, [FromBody] CategoryDto categoryDto)
         {
             var category = await _categoryService.CreateCategoryAsync(userId, categoryDto);
 

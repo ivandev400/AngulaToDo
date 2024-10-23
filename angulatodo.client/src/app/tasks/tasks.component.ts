@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskService } from '../services/task.service';
 import { Task } from '../models/task';
+import { Category } from '../models/category';
+import { CategoryService } from '../services/category.service';
 import { getLocaleDateTimeFormat } from '@angular/common';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-tasks',
@@ -19,13 +23,39 @@ export class TasksComponent implements OnInit {
   newTaskImportant: boolean = false;
   newCategoryName: string = '';
 
-  constructor(private taskService: TaskService, private route: ActivatedRoute) { }
+  constructor(private taskService: TaskService, private categoryService: CategoryService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.userId = this.route.snapshot.paramMap.get('userId')!;
     this.loadTasks();
+    this.loadCategories();
   }
 
+  addCategory() {
+    if (!this.newCategoryName) {
+      alert("Task title cannot be empty!");
+      return;
+    }
+
+    this.categoryService.getCategoryByName(this.userId, this.newCategoryName)
+      .pipe(
+        catchError(error => {
+          if (error.status === 404) {
+
+            const newCategory: Category = { name: this.newCategoryName };
+
+            return this.categoryService.createCategory(this.userId, newCategory);
+          } else {
+            return of(null);
+          }
+        })
+      )
+      .subscribe(existingOrNewCategory => {
+        this.categoryId = existingOrNewCategory.Id;
+        this.addTask();
+      });
+  }
+  
   addTask() {
     if (!this.newTaskTitle) {
       alert("Task title cannot be empty!");
@@ -45,6 +75,7 @@ export class TasksComponent implements OnInit {
       this.loadTasks();
     });
 
+    this.loadCategories();
     this.resetForm();
   }
 
@@ -60,6 +91,12 @@ export class TasksComponent implements OnInit {
     this.taskService.getAllTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
     });
+  }
+
+  loadCategories() {
+    this.categoryService.getAllCategories(this.userId).subscribe(categories => {
+      this.categories = categories;
+    })
   }
 
   deleteTask(taskId: number) {
