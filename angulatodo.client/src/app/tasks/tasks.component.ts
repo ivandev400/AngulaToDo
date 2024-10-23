@@ -11,10 +11,12 @@ import { getLocaleDateTimeFormat } from '@angular/common';
 })
 export class TasksComponent implements OnInit {
   tasks: any[] = [];
+  categories: any[] = [];
   userId: string = '';
   newTaskTitle: string = '';
   newTaskDueDate: Date = new Date();
   newTaskImportant: boolean = false;
+  categoryId?: number = undefined;
 
   constructor(private taskService: TaskService, private route: ActivatedRoute) { }
 
@@ -35,7 +37,7 @@ export class TasksComponent implements OnInit {
       created: new Date(),
       important: this.newTaskImportant,
       completed: false,
-      categoryId: undefined
+      categoryId: this.categoryId
     };
 
     this.taskService.createTask(this.userId, newTask).subscribe(() => {
@@ -45,6 +47,7 @@ export class TasksComponent implements OnInit {
     this.newTaskTitle = '';
     this.newTaskDueDate = new Date();
     this.newTaskImportant = false;
+    this.categoryId = undefined;
   }
 
   loadTasks() {
