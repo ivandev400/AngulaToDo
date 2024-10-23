@@ -49,6 +49,13 @@
                aria-label="Task Title"
                aria-describedby="addTaskBtn" />
 
+        <input [(ngModel)]="newCategoryName"
+               type="text"
+               class="form-control"
+               placeholder="Add category (optional)"
+               aria-label="Category Name"
+               aria-describedby="addCategoryBtn" />
+
         <!-- Task Due Date Input -->
         <input [(ngModel)]="newTaskDueDate"
                type="date"

@@ -13,10 +13,11 @@ export class TasksComponent implements OnInit {
   tasks: any[] = [];
   categories: any[] = [];
   userId: string = '';
+  categoryId?: number = undefined;
   newTaskTitle: string = '';
   newTaskDueDate: Date = new Date();
   newTaskImportant: boolean = false;
-  categoryId?: number = undefined;
+  newCategoryName: string = '';
 
   constructor(private taskService: TaskService, private route: ActivatedRoute) { }
 
@@ -44,10 +45,15 @@ export class TasksComponent implements OnInit {
       this.loadTasks();
     });
 
+    this.resetForm();
+  }
+
+  resetForm() {
     this.newTaskTitle = '';
     this.newTaskDueDate = new Date();
     this.newTaskImportant = false;
     this.categoryId = undefined;
+    this.newCategoryName = '';
   }
 
   loadTasks() {
