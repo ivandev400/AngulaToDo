@@ -7,7 +7,7 @@ namespace AngulaToDo.Server.Repositories.Interfaces
     {
         public Task<IEnumerable<Category>> GetAllCategoriesAsync(string userId);
         public Task<Category> GetCategoryByNameAsync(string userId, string name);
-        public Task<Category> CreateCategoryAsync(string userId, CategoryDto categoryDto);
-        public Task<Category> DeleteCategoryAsync(string userId, int categoryId);
+        public Task<Category> CreateCategoryAsync(string userId, Category category);
+        public Task<bool> DeleteCategoryAsync(string userId, int categoryId);
     }
 }

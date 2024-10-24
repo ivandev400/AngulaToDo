@@ -2,6 +2,7 @@
 using AngulaToDo.Server.Models;
 using AngulaToDo.Server.Repositories.Interfaces;
 using AngulaToDo.Server.Services.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,20 +12,23 @@ namespace AngulaToDo.Server.Services
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<User> _userManager;
-        public CategoryService(ICategoryRepository categoryRepository, UserManager<User> userManager)
+        private readonly IMapper _mapper;
+        public CategoryService(ICategoryRepository categoryRepository, UserManager<User> userManager, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync(string userId)
+        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return null;
 
-            var category = await _categoryRepository.GetAllCategoriesAsync(userId);
-            return category;
+            var categories = await _categoryRepository.GetAllCategoriesAsync(userId);
+            var categoryDtos = categories.Select(c => _mapper.Map<CategoryDto>(c)).ToList();
+            return categoryDtos;
         }
 
         public async Task<Category> GetCategoryByNameAsync(string userId, string name)
@@ -43,18 +47,18 @@ namespace AngulaToDo.Server.Services
             if (user == null)
                 return null;
 
-            var category = await _categoryRepository.CreateCategoryAsync(userId, categoryDto);
-            return category;
+            var category = _mapper.Map<Category>(categoryDto);
+            return await _categoryRepository.CreateCategoryAsync(userId, category); 
         }
 
-        public async Task<Category> DeleteCategoryAsync(string userId, int categoryId)
+        public async Task<bool> DeleteCategoryAsync(string userId, int categoryId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return null;
+                return false;
 
-            var category = await _categoryRepository.DeleteCategoryAsync(userId, categoryId);
-            return category;
+            var result = await _categoryRepository.DeleteCategoryAsync(userId, categoryId);
+            return result;
         }
     }
 }

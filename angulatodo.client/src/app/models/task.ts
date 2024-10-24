@@ -1,8 +1,8 @@
-export interface Task {
+export class Task {
   id?: number;
   title?: string;
   description?: string;
-  important?: boolean;
+  isImportant?: boolean;
   completed?: boolean;
   created?: Date;
   dueDate?: Date;

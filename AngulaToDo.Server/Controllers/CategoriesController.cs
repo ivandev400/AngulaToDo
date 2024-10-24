@@ -59,12 +59,10 @@ namespace AngulaToDo.Server.Controllers
         [HttpDelete("{userId}/{categoryId}")]
         public async Task<ActionResult> DeleteCategory(string userId, int categoryId)
         {
-            var category = await _categoryService.DeleteCategoryAsync(userId, categoryId);
+            var result = await _categoryService.DeleteCategoryAsync(userId, categoryId);
 
-            if (category == null)
-            {
+            if (!result)
                 return NotFound();
-            }
 
             return NoContent();
         }

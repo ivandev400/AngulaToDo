@@ -24,8 +24,10 @@ namespace AngulaToDo.Server.Services
         public async Task<IEnumerable<TaskDto>> GetAllTasksAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+
             if (user == null)
                 return null;
+
             var tasks = await _taskRepository.GetAllAsync(userId);
             var taskDtos = tasks.Select(t => _mapper.Map<TaskDto>(t)).ToList();
 
@@ -37,8 +39,9 @@ namespace AngulaToDo.Server.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return null;
+            var task = _mapper.Map<Task>(taskDto);
 
-            return await _taskRepository.CreateTaskAsync(userId, taskDto);
+            return await _taskRepository.CreateTaskAsync(userId, task);
         }
 
         public async Task<Task> GetTaskByIdAsync(string userId, int taskId)
@@ -52,26 +55,26 @@ namespace AngulaToDo.Server.Services
             return task;
         }
 
-        public async Task<Task> UpdateTaskAsync(string userId, int taskId, TaskDto taskDto)
+        public async Task<bool> UpdateTaskAsync(string userId, int taskId, TaskDto taskDto)
         {
             var user = await _userManager.FindByIdAsync(userId);
             var task = await _taskRepository.UpdateTaskAsync(userId, taskId, taskDto);
 
             if (user == null)
-                return null;
+                return false;
 
-            return task;
+            return true;
         }
 
-        public async Task<Task> DeleteTaskAsync(string userId, int taskId)
+        public async Task<bool> DeleteTaskAsync(string userId, int taskId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            var task = await _taskRepository.DeleteTaskAsync(userId, taskId);
+            var result = await _taskRepository.DeleteTaskAsync(userId, taskId);
 
             if (user == null)
-                return null;
+                return false;
 
-            return task;
+            return true;
         }
     }
 }

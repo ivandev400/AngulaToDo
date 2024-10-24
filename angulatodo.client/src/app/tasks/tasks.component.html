@@ -20,9 +20,21 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white py-2" href="#">
+            <a class="nav-link text-white py-2" href="/tasks">
               <i class="fas fa-tasks"></i> All Tasks
             </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white py-2" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-list"></i> Categories
+            </a>
+            <ul class="dropdown-menu">
+              <li *ngFor="let category of categories">
+                <a class="dropdown-item" href="#" (click)="filterByCategory(category.name)">
+                  {{ category.name }}
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
         <div class="nav-item mt-auto position-sticky pt-3">
@@ -90,7 +102,7 @@
               <th>Due Date</th>
               <th>Importance</th>
               <th>Completed</th>
-              <th>Actions</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -113,10 +125,10 @@
 
               <!-- Importance (flag/star icon) -->
               <td>
-                <button class="btn"
-                        [ngClass]="{ 'text-warning': task.important, 'text-muted': !task.important }"
-                        (click)="toggleImportance(task)">
-                  <i class="fa" [ngClass]="task.important ? 'fa-star' : 'fa-star-o'"></i>
+                <button class="btn" (click)="toggleImportance(task)">
+                  <span [ngClass]="task.isImportant ? 'text-warning' : 'text-muted'">
+                    {{ task.isImportant ? '⭐' : '☆' }}
+                  </span>
                 </button>
               </td>
 
@@ -129,7 +141,6 @@
 
               <!-- Actions (Edit/Delete) -->
               <td>
-                <a [routerLink]="['/tasks', userId, 'edit', task.id]" class="btn btn-sm btn-warning">Edit</a>
                 <button (click)="deleteTask(task.id)" class="btn btn-sm btn-danger">Delete</button>
               </td>
             </tr>

@@ -50,11 +50,11 @@ namespace AngulaToDo.Server.Controllers
         }
 
         [HttpPut("{userId}/{taskId}")]
-        public async Task<ActionResult> UpdateTask(string userId, int taskId, TaskDto taskDto)
+        public async Task<ActionResult> UpdateTask(string userId, int taskId, [FromBody] TaskDto taskDto)
         {
             var result = await _taskService.UpdateTaskAsync(userId, taskId, taskDto);
 
-            if (result == null)
+            if (!result)
                 return NotFound();
 
             return NoContent();
@@ -65,7 +65,7 @@ namespace AngulaToDo.Server.Controllers
         {
             var result = await _taskService.DeleteTaskAsync(userId, taskId);
 
-            if (result == null)
+            if (!result)
                 return NotFound();
 
             return NoContent();

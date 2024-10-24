@@ -14,7 +14,7 @@ import { of } from 'rxjs';
   styleUrl: './tasks.component.css'
 })
 export class TasksComponent implements OnInit {
-  tasks: any[] = [];
+  tasks: Task[] = [];
   categories: any[] = [];
   userId: string = '';
   categoryId?: number = undefined;
@@ -51,7 +51,7 @@ export class TasksComponent implements OnInit {
         })
       )
       .subscribe(existingOrNewCategory => {
-        this.categoryId = existingOrNewCategory.Id;
+        this.categoryId = existingOrNewCategory.id;
         this.addTask();
       });
   }
@@ -63,18 +63,18 @@ export class TasksComponent implements OnInit {
     }
 
     const newTask: Task = {
+
       title: this.newTaskTitle,
       dueDate: this.newTaskDueDate,
       created: new Date(),
-      important: this.newTaskImportant,
+      isImportant: this.newTaskImportant,
       completed: false,
       categoryId: this.categoryId
     };
 
-    this.taskService.createTask(this.userId, newTask).subscribe(() => {
-      this.loadTasks();
-    });
+    this.taskService.createTask(this.userId, newTask);
 
+    this.loadTasks();
     this.loadCategories();
     this.resetForm();
   }
@@ -96,20 +96,28 @@ export class TasksComponent implements OnInit {
   loadCategories() {
     this.categoryService.getAllCategories(this.userId).subscribe(categories => {
       this.categories = categories;
-    })
+    });
   }
 
-  deleteTask(taskId: number) {
+  deleteTask(taskId?: number) {
     this.taskService.deleteTask(this.userId, taskId).subscribe(() => {
+      this.loadTasks();
+    });
+  }
+
+  updateTask(taskId?: number, task?: Task) {
+    this.taskService.updateTask(this.userId, taskId, task).subscribe(() => {
       this.loadTasks();
     })
   }
 
   toggleImportance(task: Task) {
-    task.important = !task.important;
+    task.isImportant = !task.isImportant;
+    this.updateTask(task.id, task);
   }
 
   toggleCompleted(task: Task) {
     task.completed = !task.completed;
+    this.updateTask(task.id, task);
   }
 }

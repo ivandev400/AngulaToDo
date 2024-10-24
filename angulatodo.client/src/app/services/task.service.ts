@@ -21,10 +21,10 @@ export class TaskService {
   createTask(userId: string, taskDto: Task): Observable<Task> {
     return this.http.post<Task>(`${this.tasksBaseUrl}/${userId}`, taskDto);
   }
-  updateTask(userId: string, taskId: number, task: Task): Observable<void> {
+  updateTask(userId: string, taskId?: number, task?: Task): Observable<void> {
     return this.http.put<void>(`${this.tasksBaseUrl}/${userId}/${taskId}`, task);
   }
-  deleteTask(userId: string, taskId: number): Observable<void> {
-    return this.http.get<void>(`${this.tasksBaseUrl}/${userId}/${taskId}`);
+  deleteTask(userId: string, taskId?: number): Observable<void> {
+    return this.http.delete<void>(`${this.tasksBaseUrl}/${userId}/${taskId}`);
   }
 }
