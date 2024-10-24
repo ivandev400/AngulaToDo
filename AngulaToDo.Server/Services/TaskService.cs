@@ -2,6 +2,7 @@
 using AngulaToDo.Server.Models;
 using AngulaToDo.Server.Repositories.Interfaces;
 using AngulaToDo.Server.Services.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Task = AngulaToDo.Server.Models.Task;
@@ -12,19 +13,23 @@ namespace AngulaToDo.Server.Services
     {
         private readonly ITaskRepository _taskRepository;
         private readonly UserManager<User> _userManager;
-        public TaskService(ITaskRepository taskRepository, UserManager<User> userManager)
+        private readonly IMapper _mapper;
+        public TaskService(ITaskRepository taskRepository, UserManager<User> userManager, IMapper mapper)
         {
             _taskRepository = taskRepository;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Task>> GetAllTasksAsync(string userId)
+        public async Task<IEnumerable<TaskDto>> GetAllTasksAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return null;
+            var tasks = await _taskRepository.GetAllAsync(userId);
+            var taskDtos = tasks.Select(t => _mapper.Map<TaskDto>(t)).ToList();
 
-            return await _taskRepository.GetAllAsync(userId);
+            return taskDtos;
         }
 
         public async Task<Task> CreateTaskAsync(string userId, TaskDto taskDto)

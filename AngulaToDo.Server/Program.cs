@@ -4,11 +4,9 @@ using AngulaToDo.Server.Services.Interfaces;
 using AngulaToDo.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using AngulaToDo.Server.Repositories.Interfaces;
 using AngulaToDo.Server.Repositories;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +35,11 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
+
+var options = new JsonSerializerOptions
+{
+    MaxDepth = 10 
+};
 
 builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
