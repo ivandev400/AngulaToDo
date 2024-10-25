@@ -15,13 +15,14 @@ import { of } from 'rxjs';
 })
 export class TasksComponent implements OnInit {
   tasks: Task[] = [];
-  categories: any[] = [];
+  categories: Category[] = [];
   userId: string = '';
   categoryId?: number = undefined;
   newTaskTitle: string = '';
   newTaskDueDate: Date = new Date();
   newTaskImportant: boolean = false;
   newCategoryName: string = '';
+  isDropDownOpen: boolean = false;
 
   constructor(private taskService: TaskService, private categoryService: CategoryService, private route: ActivatedRoute) { }
 
@@ -87,6 +88,12 @@ export class TasksComponent implements OnInit {
     this.newCategoryName = '';
   }
 
+  loadTasksByCategory(categoryName?: string) {
+    this.taskService.getTasksByCategoryName(this.userId, categoryName).subscribe(tasks => {
+      this.tasks = tasks;
+    })
+  }
+
   loadTasks() {
     this.taskService.getAllTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
@@ -119,5 +126,9 @@ export class TasksComponent implements OnInit {
   toggleCompleted(task: Task) {
     task.completed = !task.completed;
     this.updateTask(task.id, task);
+  }
+
+  toggleDropdown() {
+    this.isDropDownOpen = !this.isDropDownOpen;
   }
 }

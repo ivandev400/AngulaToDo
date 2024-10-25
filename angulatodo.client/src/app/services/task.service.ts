@@ -27,4 +27,8 @@ export class TaskService {
   deleteTask(userId: string, taskId?: number): Observable<void> {
     return this.http.delete<void>(`${this.tasksBaseUrl}/${userId}/${taskId}`);
   }
+
+  getTasksByCategoryName(userId: string, categoryName?: string): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.tasksBaseUrl}/${userId}/category/${categoryName}`);
+  }
 }

@@ -32,6 +32,20 @@ namespace AngulaToDo.Server.Repositories
             return tasks;
         }
 
+        public async Task<IEnumerable<Task>> GetByCategoryNameAsync(string userId, string categoryName)
+        {
+            var category = _context.Categories
+                .AsNoTracking()
+                .FirstOrDefault(c => c.Name == categoryName && c.UserId == userId);
+
+            var tasks = await _context.Tasks
+                .Where(t => t.UserId == userId && t.CategoryId == category.Id)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return tasks;
+        }
+
         public async Task<Task> CreateTaskAsync(string userId, Task task)
         {
             task.UserId = userId;

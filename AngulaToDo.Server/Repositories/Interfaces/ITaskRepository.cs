@@ -7,6 +7,7 @@ namespace AngulaToDo.Server.Repositories.Interfaces
     public interface ITaskRepository
     {
         public Task<IEnumerable<Task>> GetAllAsync(string userId);
+        public Task<IEnumerable<Task>> GetByCategoryNameAsync(string userId, string categoryName);
         public Task<Task> CreateTaskAsync(string userId, Task task);
         public Task<Task> GetTaskByIdAsync(string userId, int taskId);
         public Task<bool> UpdateTaskAsync(string userId, int taskId, TaskDto taskDto);

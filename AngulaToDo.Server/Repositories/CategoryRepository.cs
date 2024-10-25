@@ -35,6 +35,7 @@ namespace AngulaToDo.Server.Repositories
 
         public async Task<Category> CreateCategoryAsync(string userId, Category category)
         {
+            category.UserId = userId;
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 

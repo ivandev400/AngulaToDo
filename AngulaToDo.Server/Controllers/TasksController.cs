@@ -70,5 +70,16 @@ namespace AngulaToDo.Server.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("{userId}/category/{categoryName}")]
+        public async Task<IActionResult> GetTasksByCategoryName(string userId, string categoryName)
+        {
+            var result = await _taskService.GetTasksByCategoryNameAsync(userId, categoryName);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
     }
 }

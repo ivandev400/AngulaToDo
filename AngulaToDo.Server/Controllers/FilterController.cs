@@ -1,6 +1,13 @@
-﻿namespace AngulaToDo.Server.Controllers
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AngulaToDo.Server.Controllers
 {
-    public class FilterController
+    [EnableCors("AllowSpecificOrigin")]
+    [ApiController]
+    [Route("api/filter")]
+    public class FilterController : Controller
     {
+
     }
 }
