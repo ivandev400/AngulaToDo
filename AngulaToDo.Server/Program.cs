@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AngulaToDo.Server.Repositories.Interfaces;
 using AngulaToDo.Server.Repositories;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,10 +35,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-var options = new JsonSerializerOptions
-{
-    MaxDepth = 10 
-};
 
 builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();

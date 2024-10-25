@@ -37,6 +37,13 @@ namespace AngulaToDo.Server.Services
                 return null;
 
             var category = await _categoryRepository.GetCategoryByNameAsync(userId, name);
+
+            if (category == null)
+            {
+                var newCategory = new Category { Name = name };
+                category = await _categoryRepository.CreateCategoryAsync(userId, newCategory);
+            }
+
             return category;
         }
 

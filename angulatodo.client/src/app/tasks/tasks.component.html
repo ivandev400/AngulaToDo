@@ -34,9 +34,12 @@
               <i class="fas fa-list"></i> Categories
             </button>
             <ul class="dropdown-menu" *ngIf="isDropDownOpen" style="display: block;">
-              <li *ngFor="let category of categories">
+              <li *ngFor="let category of categories" class="d-flex align-items-center justify-content-between px-2 py-1">
                 <button class="dropdown-item" (click)="loadTasksByCategory(category.name)">
                   {{ category.name }}
+                </button>
+                <button class="btn btn-danger btn-sm ms-2" (click)="deleteCategory(category.id)" aria-label="Delete category">
+                  ✕
                 </button>
               </li>
             </ul>
@@ -112,7 +115,8 @@
 
               <!-- Due date -->
               <td>
-                <input [(ngModel)]="task.dueDate"
+                <input [ngModel]="formatDueDate(task.dueDate)"
+                       (ngModelChange)="setFormattedDueDate(task, $event)"
                        type="date"
                        class="form-control"
                        placeholder="Due Date"

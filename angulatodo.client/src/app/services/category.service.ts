@@ -19,11 +19,11 @@ export class CategoryService {
     return this.http.get<Category | null>(`${this.categoryBaseUrl}/${userId}/${name}`);
   }
 
-  createCategory(userId: string, category: Category): Observable<any> {
-    return this.http.post<any>(`${this.categoryBaseUrl}/${userId}`, category);
+  createCategory(userId: string, category: Category): Observable<Category> {
+    return this.http.post<Category>(`${this.categoryBaseUrl}/${userId}`, category);
   }
 
-  deleteCategory(userId: string, categoryId: number): Observable<any> {
+  deleteCategory(userId: string, categoryId?: number): Observable<any> {
     return this.http.delete<any>(`${this.categoryBaseUrl}/${userId}/${categoryId}`);
   }
 }

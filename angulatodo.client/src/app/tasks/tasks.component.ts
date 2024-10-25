@@ -8,6 +8,7 @@ import { getLocaleDateTimeFormat } from '@angular/common';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FilterService } from '../services/filter.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-tasks',
@@ -20,12 +21,14 @@ export class TasksComponent implements OnInit {
   userId: string = '';
   categoryId?: number = undefined;
   newTaskTitle: string = '';
-  newTaskDueDate: Date = new Date();
-  newTaskImportant: boolean = false;
+  newTaskDueDate: string = '';
   newCategoryName: string = '';
   isDropDownOpen: boolean = false;
 
-  constructor(private taskService: TaskService, private categoryService: CategoryService, private filterService: FilterService, private route: ActivatedRoute) { }
+  constructor(private taskService: TaskService,
+    private categoryService: CategoryService,
+    private filterService: FilterService, private route: ActivatedRoute,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.userId = this.route.snapshot.paramMap.get('userId')!;
@@ -40,21 +43,11 @@ export class TasksComponent implements OnInit {
     }
 
     this.categoryService.getCategoryByName(this.userId, this.newCategoryName)
-      .pipe(
-        catchError(error => {
-          if (error.status === 404) {
-
-            const newCategory: Category = { name: this.newCategoryName };
-
-            return this.categoryService.createCategory(this.userId, newCategory);
-          } else {
-            return of(null);
-          }
-        })
-      )
-      .subscribe(existingOrNewCategory => {
-        this.categoryId = existingOrNewCategory.id;
-        this.addTask();
+      .subscribe(category => {
+        if (category != null) {
+          this.categoryId = category.id;
+          this.addTask();
+        }
       });
   }
   
@@ -67,26 +60,33 @@ export class TasksComponent implements OnInit {
     const newTask: Task = {
 
       title: this.newTaskTitle,
-      dueDate: this.newTaskDueDate,
+      dueDate: new Date(this.newTaskDueDate),
       created: new Date(),
-      isImportant: this.newTaskImportant,
+      isImportant: undefined,
       completed: false,
       categoryId: this.categoryId
     };
 
-    this.taskService.createTask(this.userId, newTask);
-
-    this.loadTasks();
-    this.loadCategories();
-    this.resetForm();
+    this.taskService.createTask(this.userId, newTask).subscribe(() => {
+      this.loadTasks();
+      this.loadCategories();
+      this.resetForm();
+    });
   }
 
   resetForm() {
     this.newTaskTitle = '';
-    this.newTaskDueDate = new Date();
-    this.newTaskImportant = false;
+    this.newTaskDueDate = '';
     this.categoryId = undefined;
     this.newCategoryName = '';
+  }
+
+  formatDueDate(dueDate?: Date): string {
+    return dueDate ? this.datePipe.transform(dueDate, 'yyyy-MM-dd') || '' : '';
+  }
+
+  setFormattedDueDate(task: Task, formattedDate: string) {
+    task.dueDate = new Date(formattedDate); 
   }
 
   loadTasksByCategory(categoryName?: string) {
@@ -135,6 +135,12 @@ export class TasksComponent implements OnInit {
     this.taskService.deleteTask(this.userId, taskId).subscribe(() => {
       this.loadTasks();
     });
+  }
+
+  deleteCategory(categoryId?: number) {
+    this.categoryService.deleteCategory(this.userId, categoryId).subscribe(() => {
+      this.loadCategories();
+    })
   }
 
   updateTask(taskId?: number, task?: Task) {

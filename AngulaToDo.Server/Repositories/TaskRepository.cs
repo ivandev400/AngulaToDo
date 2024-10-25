@@ -44,6 +44,8 @@ namespace AngulaToDo.Server.Repositories
         public async Task<Task> CreateTaskAsync(string userId, Task task)
         {
             task.UserId = userId;
+            task.IsImportant = false;
+            task.Completed = false;
 
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();

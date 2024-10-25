@@ -37,7 +37,7 @@ namespace AngulaToDo.Server.Controllers
 
             if (category == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             return Ok(category);
@@ -53,7 +53,7 @@ namespace AngulaToDo.Server.Controllers
                 return NotFound();
             }
 
-            return NoContent();
+            return Ok(category);
         }
 
         [HttpDelete("{userId}/{categoryId}")]

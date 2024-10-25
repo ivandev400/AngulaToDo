@@ -35,7 +35,7 @@ namespace AngulaToDo.Server.Controllers
             if (task == null)
                 return NotFound();
 
-            return CreatedAtAction(nameof(GetTaskById), new { userId = userId, taskId = task.Id }, task);
+            return Ok();
         }
 
         [HttpGet("{userId}/{taskId}")]

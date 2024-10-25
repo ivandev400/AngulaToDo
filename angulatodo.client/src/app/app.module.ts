@@ -10,7 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { TasksComponent } from './tasks/tasks.component'; 
+import { TasksComponent } from './tasks/tasks.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { TasksComponent } from './tasks/tasks.component';
     FormsModule
   ],
   providers: [
+    DatePipe
   ],
   bootstrap: [AppComponent, LoginComponent, RegisterComponent, TasksComponent]
 })

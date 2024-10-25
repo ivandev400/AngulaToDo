@@ -46,14 +46,15 @@ namespace AngulaToDo.Server.Services
             return taskDtos;
         }
 
-        public async Task<Task> CreateTaskAsync(string userId, TaskDto taskDto)
+        public async Task<TaskDto> CreateTaskAsync(string userId, TaskDto taskDto)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return null;
             var task = _mapper.Map<Task>(taskDto);
+            var createdTask = await _taskRepository.CreateTaskAsync(userId, task);
 
-            return await _taskRepository.CreateTaskAsync(userId, task);
+            return _mapper.Map<TaskDto>(createdTask);
         }
 
         public async Task<Task> GetTaskByIdAsync(string userId, int taskId)

@@ -39,7 +39,7 @@ namespace AngulaToDo.Server.Repositories
         {
             var tasks = await _context.Tasks
                 .Where(t => t.UserId == userId && t.Completed == false)
-                .Where(t => t.DueDate.Date != DateTime.Now.Date && t.DueDate.Date !< DateTime.Now.Date)
+                .Where(t => t.DueDate.Date > DateTime.Now.Date)
                 .AsNoTracking()
                 .ToListAsync();
 

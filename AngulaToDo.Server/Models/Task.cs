@@ -1,4 +1,6 @@
-﻿namespace AngulaToDo.Server.Models
+﻿using Newtonsoft.Json;
+
+namespace AngulaToDo.Server.Models
 {
     public class Task
     {
@@ -12,7 +14,6 @@
         public int? CategoryId { get; set; }
         public string? UserId { get; set; }
 
-        public User? User { get; set; }
         public Category? Category { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace AngulaToDo.Server.Models
+﻿using Newtonsoft.Json;
+
+namespace AngulaToDo.Server.Models
 {
     public class Category
     {
