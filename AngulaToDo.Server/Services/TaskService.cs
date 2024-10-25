@@ -4,7 +4,6 @@ using AngulaToDo.Server.Repositories.Interfaces;
 using AngulaToDo.Server.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 using Task = AngulaToDo.Server.Models.Task;
 
 namespace AngulaToDo.Server.Services

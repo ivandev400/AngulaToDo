@@ -7,6 +7,7 @@ import { CategoryService } from '../services/category.service';
 import { getLocaleDateTimeFormat } from '@angular/common';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { FilterService } from '../services/filter.service';
 
 @Component({
   selector: 'app-tasks',
@@ -24,7 +25,7 @@ export class TasksComponent implements OnInit {
   newCategoryName: string = '';
   isDropDownOpen: boolean = false;
 
-  constructor(private taskService: TaskService, private categoryService: CategoryService, private route: ActivatedRoute) { }
+  constructor(private taskService: TaskService, private categoryService: CategoryService, private filterService: FilterService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.userId = this.route.snapshot.paramMap.get('userId')!;
@@ -96,6 +97,30 @@ export class TasksComponent implements OnInit {
 
   loadTasks() {
     this.taskService.getAllTasks(this.userId).subscribe(tasks => {
+      this.tasks = tasks;
+    });
+  }
+
+  loadDailyTasks() {
+    this.filterService.getDailyTasks(this.userId).subscribe(tasks => {
+      this.tasks = tasks;
+    });
+  }
+
+  loadImportantTasks() {
+    this.filterService.getImportantTasks(this.userId).subscribe(tasks => {
+      this.tasks = tasks;
+    });
+  }
+
+  loadPlannedTasks() {
+    this.filterService.getPlannedTasks(this.userId).subscribe(tasks => {
+      this.tasks = tasks;
+    });
+  }
+
+  loadCompletedTasks() {
+    this.filterService.getCompletedTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
     });
   }

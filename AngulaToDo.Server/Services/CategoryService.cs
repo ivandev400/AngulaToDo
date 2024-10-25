@@ -4,7 +4,6 @@ using AngulaToDo.Server.Repositories.Interfaces;
 using AngulaToDo.Server.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace AngulaToDo.Server.Services
 {

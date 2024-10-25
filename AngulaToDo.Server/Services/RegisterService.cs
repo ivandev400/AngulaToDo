@@ -1,10 +1,6 @@
 ﻿using AngulaToDo.Server.Models;
 using AngulaToDo.Server.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using AutoMapper;
 using AngulaToDo.Server.Data.Dtos;
 

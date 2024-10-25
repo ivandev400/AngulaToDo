@@ -1,28 +1,33 @@
 <div class="container-fluid">
   <div class="row">
     <!-- Sidebar Panel -->
-    <nav id="sidebarMenu" class="col-md-3 col-lg-1 d-md-block bg-dark sidebar text-white">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar text-white">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active text-white py-2" aria-current="page" href="#">
-              <i class="fas fa-star"></i> Important
-            </a>
+            <button class="nav-link text-white py-2" type="button" (click)="loadImportantTasks()">
+              <i class="fas fa-list"></i> Important
+            </button>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white py-2" href="#">
-              <i class="fas fa-calendar-day"></i> Due Date
-            </a>
+            <button class="nav-link text-white py-2" type="button" (click)="loadPlannedTasks()">
+              <i class="fas fa-list"></i> Planned
+            </button>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white py-2" href="#">
-              <i class="fas fa-sun"></i> Daily
-            </a>
+            <button class="nav-link text-white py-2" type="button" (click)="loadDailyTasks()">
+              <i class="fas fa-list"></i> Daily
+            </button>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white py-2" href="/tasks">
-              <i class="fas fa-tasks"></i> All Tasks
-            </a>
+            <button class="nav-link text-white py-2" type="button" (click)="loadCompletedTasks()">
+              <i class="fas fa-list"></i> Completed
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link text-white py-2" type="button" (click)="loadTasks()">
+              <i class="fas fa-list"></i> All Tasks
+            </button>
           </li>
           <li class="nav-item dropdown">
             <button class="nav-link dropdown-toggle text-white py-2" type="button" (click)="toggleDropdown()">
@@ -37,7 +42,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-danger py-2" href="/logout">
+            <a class="nav-link text-danger py-2" href="/">
               <i class="fas fa-sign-out-alt"></i> Logout
             </a>
           </li>
@@ -76,17 +81,6 @@
                aria-label="Task Due Date"
                aria-describedby="addTaskBtn" />
 
-        <!-- Task Importance Checkbox -->
-        <div class="form-check form-switch">
-          <input class="form-check-input"
-                 type="checkbox"
-                 id="importantTaskCheck"
-                 [(ngModel)]="newTaskImportant" />
-          <label class="form-check-label" for="importantTaskCheck">
-            Important
-          </label>
-        </div>
-
         <!-- Add Button -->
         <button class="btn btn-outline-secondary" type="button" (click)="addCategory()">
           Add
@@ -112,7 +106,8 @@
                 <input [(ngModel)]="task.title"
                        type="text"
                        class="form-control"
-                       placeholder="Task title" />
+                       placeholder="Task title"
+                       (change)="updateTask(task.id, task)" />
               </td>
 
               <!-- Due date -->
@@ -120,7 +115,8 @@
                 <input [(ngModel)]="task.dueDate"
                        type="date"
                        class="form-control"
-                       placeholder="Due Date" />
+                       placeholder="Due Date"
+                       (change)="updateTask(task.id, task)" />
               </td>
 
               <!-- Importance (flag/star icon) -->
@@ -134,9 +130,11 @@
 
               <!-- Completed (Checkbox) -->
               <td>
-                <input type="checkbox"
-                       [(ngModel)]="task.completed"
-                       (change)="toggleCompleted(task)" />
+                <button class="btn" (click)="toggleCompleted(task)">
+                  <span [ngClass]="task.completed ? 'text-success' : 'text-muted'">
+                    {{ task.completed ? '✔️' : '⬜️' }}
+                  </span>
+                </button>
               </td>
 
               <!-- Actions (Edit/Delete) -->

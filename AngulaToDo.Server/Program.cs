@@ -44,6 +44,8 @@ var options = new JsonSerializerOptions
 builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IFilterRepository, FilterRepository>();
+builder.Services.AddScoped<IFilterService, FilterService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 

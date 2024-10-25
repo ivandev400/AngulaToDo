@@ -1,13 +1,8 @@
 ﻿using AngulaToDo.Server.Data;
 using AngulaToDo.Server.Data.Dtos;
-using AngulaToDo.Server.Models;
 using AngulaToDo.Server.Repositories.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
-using System.Diagnostics;
 using Task = AngulaToDo.Server.Models.Task;
 
 namespace AngulaToDo.Server.Repositories
@@ -25,7 +20,7 @@ namespace AngulaToDo.Server.Repositories
         public async Task<IEnumerable<Task>> GetAllAsync(string userId)
         {
             var tasks = await _context.Tasks
-                .Where(t => t.UserId == userId)
+                .Where(t => t.UserId == userId && t.Completed == false)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -39,7 +34,7 @@ namespace AngulaToDo.Server.Repositories
                 .FirstOrDefault(c => c.Name == categoryName && c.UserId == userId);
 
             var tasks = await _context.Tasks
-                .Where(t => t.UserId == userId && t.CategoryId == category.Id)
+                .Where(t => t.UserId == userId && t.CategoryId == category.Id && t.Completed == false)
                 .AsNoTracking()
                 .ToListAsync();
 
