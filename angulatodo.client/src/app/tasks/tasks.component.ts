@@ -25,6 +25,11 @@ export class TasksComponent implements OnInit {
   newCategoryName: string = '';
   isDropDownOpen: boolean = false;
 
+  paginatedTasks: Task[] = [];
+  currentPage: number = 1;
+  pageSize: number = 5;
+  totalTasks: number = 0;
+
   constructor(private taskService: TaskService,
     private categoryService: CategoryService,
     private filterService: FilterService, private route: ActivatedRoute,
@@ -89,39 +94,71 @@ export class TasksComponent implements OnInit {
     task.dueDate = new Date(formattedDate); 
   }
 
+  updatePaginatedTasks(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedTasks = this.tasks.slice(start, end);
+  }
+
+  nextPage(): void {
+    if (this.currentPage * this.pageSize < this.totalTasks) {
+      this.currentPage++;
+      this.updatePaginatedTasks();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedTasks();
+    }
+  }
+
   loadTasksByCategory(categoryName?: string) {
     this.taskService.getTasksByCategoryName(this.userId, categoryName).subscribe(tasks => {
       this.tasks = tasks;
+      this.totalTasks = tasks.length;
+      this.updatePaginatedTasks();
     })
   }
 
   loadTasks() {
     this.taskService.getAllTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
+      this.totalTasks = tasks.length;
+      this.updatePaginatedTasks();
     });
   }
 
   loadDailyTasks() {
     this.filterService.getDailyTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
+      this.totalTasks = tasks.length;
+      this.updatePaginatedTasks();
     });
   }
 
   loadImportantTasks() {
     this.filterService.getImportantTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
+      this.totalTasks = tasks.length;
+      this.updatePaginatedTasks();
     });
   }
 
   loadPlannedTasks() {
     this.filterService.getPlannedTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
+      this.totalTasks = tasks.length;
+      this.updatePaginatedTasks();
     });
   }
 
   loadCompletedTasks() {
     this.filterService.getCompletedTasks(this.userId).subscribe(tasks => {
       this.tasks = tasks;
+      this.totalTasks = tasks.length;
+      this.updatePaginatedTasks();
     });
   }
 
