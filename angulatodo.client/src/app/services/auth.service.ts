@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'any'
 })
 export class AuthService {
-  private baseApiUrl: string = 'https://localhost:7031/api/accounts';
+  private baseApiUrl: string = 'http://angulatodoserverside.runasp.net/api/accounts';
 
   constructor(private http: HttpClient) { }
 

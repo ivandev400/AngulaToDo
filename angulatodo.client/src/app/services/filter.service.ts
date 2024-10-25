@@ -8,7 +8,7 @@ import { Task } from '../models/task';
 })
 export class FilterService {
 
-  private filterBaseUrl = 'https://localhost:7031/api/filter';
+  private filterBaseUrl = 'http://angulatodoserverside.runasp.net/api/filter';
 
   constructor(private http: HttpClient) { }
 
