@@ -7,7 +7,7 @@ import { Category } from '../models/category';
   providedIn: 'root'
 })
 export class CategoryService {
-  private categoryBaseUrl = 'http://angulatodoserverside.runasp.net/api/categories';
+  private categoryBaseUrl = 'https://localhost:7031/api/categories';
 
   constructor(private http: HttpClient) { }
 

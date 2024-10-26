@@ -8,7 +8,7 @@ import { Task } from '../models/task';
 })
 export class TaskService {
 
-  private tasksBaseUrl = 'http://angulatodoserverside.runasp.net/api/tasks';
+  private tasksBaseUrl = 'https://localhost:7031/api/tasks';
 
   constructor(private http: HttpClient) { }
 
