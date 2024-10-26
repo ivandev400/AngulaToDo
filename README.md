@@ -1,9 +1,6 @@
 Just clone this repository, open in your visual studio and serve two servers and try to use 
 
-!![{55A78B9D-E08B-4983-922B-602DB272C83A}](https://github.com/user-attachments/assets/43846d7e-e468-43d0-938c-74b516d019c1)
+Angular![{55A78B9D-E08B-4983-922B-602DB272C83A}](https://github.com/user-attachments/assets/43846d7e-e468-43d0-938c-74b516d019c1)
 
 
-!![{49574597-7118-4198-9429-A02192BD9E15}](https://github.com/user-attachments/assets/496b32c3-c5dd-49ba-9af0-490d823a0880)
-
-
-)
+Backend![{49574597-7118-4198-9429-A02192BD9E15}](https://github.com/user-attachments/assets/496b32c3-c5dd-49ba-9af0-490d823a0880)
