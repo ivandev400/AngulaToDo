@@ -1,11 +1,18 @@
+using AngulaToDo.Server.Controllers;
 using AngulaToDo.Server.Data.Dtos;
 using AngulaToDo.Server.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
+using AngulaToDo.Server.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Moq;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using Xunit;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using AngulaToDo.Server.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
 using System.Net;
 
@@ -17,7 +24,7 @@ namespace AngulaToDo.Server.Tests
 
         public AccountsControllerIntegrationTests(WebApplicationFactory<Program> factory)
         {
-            Client = CreateAndReturnFactory(factory);
+            Client = factory.CreateClient();
         }
 
         [Fact]
@@ -34,33 +41,6 @@ namespace AngulaToDo.Server.Tests
             var response = await Client.PostAsJsonAsync("/api/accounts/register", userForRegistration);
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        }
-
-        private HttpClient CreateAndReturnFactory(WebApplicationFactory<Program> factory)
-        {
-            return factory
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureServices(services =>
-                    {
-                        var descriptor = services.SingleOrDefault(
-                            d => d.ServiceType == typeof(DbContextOptions<ToDoContext>));
-                        if (descriptor != null)
-                        {
-                            services.Remove(descriptor);
-                        }
-
-                        services.AddDbContext<ToDoContext>(options =>
-                        {
-                            options.UseInMemoryDatabase("InMemoryDbForTesting");
-                        });
-
-                        services.AddIdentity<User, IdentityRole>()
-                            .AddEntityFrameworkStores<ToDoContext>()
-                            .AddDefaultTokenProviders();
-                    });
-                })
-                .CreateClient();
         }
     }
 }
