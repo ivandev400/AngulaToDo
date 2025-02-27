@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Deployment
-        uses: azure/webapps-deploy@2
+        uses: azure/webapps-deploy@3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DE06BD854CB94495A837C6C9FAAB7E5E }}
