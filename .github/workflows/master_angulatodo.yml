@@ -9,6 +9,10 @@ on:
       - master
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_NAME: AngulaToDo
+  AZURE_WEBAPP_PACKAGE_PATH: ./publish
+
 jobs:
   build:
     runs-on: windows-latest
@@ -16,28 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
+      - name: Setup .NET 
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Restore 
+        run: dotnet restore ./AngulaToDo.sln
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Build 
+        run: dotnet build ./AngulaToDo.sln --configuration Release --no-restore
 
-      - name: Publish the project
-        run: dotnet publish -c Release -o ./published
-
-      - name: List published files
-        run: dir ./published
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: ASP-app
-          path: '/published'
+      - name: Publish
+        run: dotnet publish ./AngulaToDo.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
 
   deploy:
     runs-on: windows-latest
@@ -47,20 +42,9 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      - name: Deployment
+        uses: azure/webapps-deploy@2
         with:
-          name: ASP-app
-          path: ./downloaded-artifact
-
-      - name: List downloaded files
-        run: dir ./downloaded-artifact
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'AngulaToDo'
-          slot-name: 'Production'
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DE06BD854CB94495A837C6C9FAAB7E5E }}
-          package: ./downloaded-artifact
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
