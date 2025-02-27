@@ -56,4 +56,4 @@ jobs:
           app-name: 'AngulaToDo'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DE06BD854CB94495A837C6C9FAAB7E5E }}
-          package: ./published
+          package: ./downloaded-artifact
