@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 **/appsettings.json
+/AngulaToDo.Server/appsettings.json
