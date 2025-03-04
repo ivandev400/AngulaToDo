@@ -24,18 +24,6 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddDefaultTokenProviders();
 
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigin",
-        builder =>
-        {
-            builder.WithOrigins("https://localhost:4200", "https://127.0.0.1:4200")
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
-});
-
-
 builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();

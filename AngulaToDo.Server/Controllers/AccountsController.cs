@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AngulaToDo.Server.Controllers
 {
-    [EnableCors("AllowSpecificOrigin")]
     [ApiController]
     [Route("api/accounts")]
     public class AccountsController : ControllerBase
