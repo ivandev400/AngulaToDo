@@ -37,7 +37,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-app.UseCors("AllowSpecificOrigin");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
